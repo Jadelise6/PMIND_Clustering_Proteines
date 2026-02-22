@@ -1,3 +1,7 @@
 PMIND2026_cluster/
-Embeddings/Data/all_darkdino.csv
-Embeddings/Data/embeddings.bin
+Embeddings/Data/
+diamond_alignments.filter/
+BLAST/
+BLAST_Embeddings/
+Graphe BLAST/scripts/protein_top_tranches.tsv
+Graphe BLAST/scripts/fasta_to_skip.txt

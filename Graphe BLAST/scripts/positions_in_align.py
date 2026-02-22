@@ -2,7 +2,7 @@
 import gzip
 from collections import defaultdict
 
-ALIGNMENTS_FILE = "diamond_alignments.filter.tsv"
+ALIGNMENTS_FILE = "../../diamond_alignments.filter/diamond_alignments.filter.tsv"
 OUTPUT_FILE = "protein_top_tranches.tsv"
 TRANCHE_SIZE = 1024
 

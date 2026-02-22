@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-fasta_dir = Path("darkdino_fasta")  # dossier contenant tes .fasta
-align_file = Path("diamond_alignments.filter.tsv")
+fasta_dir = Path("../../PMIND2026_cluster/darkdino_fasta")  # dossier contenant tes .fasta
+align_file = Path("../../diamond_alignments.filter/diamond_alignments.filter.tsv")
 
 # --- Étape 1 : extraire tous les identifiants des FASTA ---
 fasta_proteins = set()
