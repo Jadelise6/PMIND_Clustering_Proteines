@@ -7,7 +7,7 @@ import os
 EMB_DAT = "/tempory/21234701/output_proteinbert/embeddings_final_deduplicated.dat"
 BLAST_FILE = "/tempory/21234701/graph_edges.tsv"
 ALPHA_LIST = [0.2, 0.4, 0.5, 0.6, 0.8]
-COSINE_FILE = "/tempory/21234701/darkdino_cosine_graph.tsv"
+COSINE_FILE = "/tempory/21234701/darkdino_cos_graph_threshold.tsv"
 
 ID_SIZE = 100
 RECORD_SIZE = ID_SIZE + (512 * 4)

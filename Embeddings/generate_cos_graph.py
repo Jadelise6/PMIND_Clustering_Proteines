@@ -6,7 +6,7 @@ import os
 
 # Paramètres
 DAT_FILE = "/tempory/21234701/output_proteinbert/embeddings_final_deduplicated.dat"
-BLAST_FILE = "/tempory/21234701/diamond_alignments.filter.tsv"
+BLAST_FILE = "/tempory/21234701/graph_edges.tsv"
 OUTPUT_FILE = "/tempory/21234701/darkdino_cosine_graph.tsv"
 
 ID_SIZE = 100           # Taille de l'ID (même ID que les .fasta)
@@ -56,9 +56,9 @@ def process_graph(emb_dict):
             parts = line.split()
             
             try:
-                # Dans BLAST, ID1 est à l'index 0, ID2 est à l'index 4
+                # Dans BLAST, ID1 est à l'index 0, ID2 est à l'index 1
                 id1 = parts[0]
-                id2 = parts[4]
+                id2 = parts[1]
                 
                 if id1 in emb_dict and id2 in emb_dict:
                     # Comme les vecteurs sont normalisés, Cosinus = Produit Scalaire
