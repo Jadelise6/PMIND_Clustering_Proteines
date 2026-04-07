@@ -5,9 +5,9 @@ import pandas as pd
 import numpy as np
 
 # BLAST
-BLAST_COMP_FILE = "/tempory/21234701/blast_components.tsv"                # Fichier prévu pour contenir les composantes de BLAST
-PRIN_COMP_CLUSTERS = "/tempory/21234701/blast_princ_comp_leiden_clusters" # Clusters de la composante principale
-OUTPUT_CSV = "/tempory/21234701/blast_cluster_validation_scores"          # Fichier de sortie, csv avec les scores
+BLAST_COMP_FILE = "/tempory/21234701/reduced_blast_components.tsv"                # Fichier prévu pour contenir les composantes de BLAST
+PRIN_COMP_CLUSTERS = "/tempory/21234701/reduced_blast_princ_comp_leiden_clusters" # Clusters de la composante principale
+OUTPUT_CSV = "/tempory/21234701/reduced_blast_cluster_validation_scores"          # Fichier de sortie, csv avec les scores
 
 # BLAST & Embeddings
 ALPHA_LIST = [0.2, 0.4, 0.5, 0.6, 0.8]
@@ -120,8 +120,8 @@ def traitement_graphe(com_file, prin_comp_file, output_csv):
         
      
 # BLAST
-# traitement_graphe(BLAST_COMP_FILE, PRIN_COMP_CLUSTERS, OUTPUT_CSV)
+traitement_graphe(BLAST_COMP_FILE, PRIN_COMP_CLUSTERS, OUTPUT_CSV)
 
-# BLAST & embeddings
-for com_file, prin_comp_file, output_csv in zip(com_files, prin_comp_files, output_csvs):
-    traitement_graphe(com_file, prin_comp_file, output_csv)
+# # BLAST & embeddings
+# for com_file, prin_comp_file, output_csv in zip(com_files, prin_comp_files, output_csvs):
+#     traitement_graphe(com_file, prin_comp_file, output_csv)

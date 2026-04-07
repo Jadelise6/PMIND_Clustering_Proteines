@@ -1,7 +1,8 @@
 PMIND2026_cluster/
 Embeddings/Data/
 diamond_alignments.filter/
-BLAST/
-BLAST_Embeddings/
+*.tsv
+*.csv
+*.dat
 Graphe BLAST/scripts/protein_top_tranches.tsv
 Graphe BLAST/scripts/fasta_to_skip.txt

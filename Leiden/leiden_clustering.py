@@ -4,11 +4,11 @@ import igraph as ig
 import leidenalg as la
 
 # BLAST
-BLAST_COMP_FILE = "/tempory/21234701/blast_components.tsv"             # Fichier des composantes
-OUTPUT_CLUSTERS = "/tempory/21234701/blast_princ_comp_leiden_clusters" # Clusters de sortie
+BLAST_COMP_FILE = "/tempory/21234701/reduced_blast_components.tsv"           # Fichier des composantes
+OUTPUT_CLUSTERS_BLAST = "/tempory/21234701/reduced_blast_princ_comp_leiden_clusters" # Clusters de sortie
 
 # BLAST & Embeddings
-ALPHA_LIST = [0.2, 0.4, 0.5, 0.6, 0.8]
+ALPHA_LIST = [0.2, 0.4, 0.5, 0.6, 0.8, 0.93, 0.96, 0.99, 1.0]
 COMP_FILES = "/tempory/21234701/components_combined_graph_alpha_"    # Racine fichier prévu pour contenir les composantes des fichiers
 input_files = [f"{COMP_FILES}{a}.tsv" for a in ALPHA_LIST]
 
@@ -16,6 +16,7 @@ OUTPUT_CLUSTERS = "/tempory/21234701/combined_graph_alpha_princ_comp_leiden"
 output_files = [f"{OUTPUT_CLUSTERS}{a}" for a in ALPHA_LIST]
 
 def traitement_graphe(input_file, output_file):
+    print(output_file)
     # Récupère la composante principale (id 0)
     print("Chargement de la composante")
     edges_with_weights = []
@@ -52,7 +53,7 @@ def traitement_graphe(input_file, output_file):
         print(f"Terminé pour gamma={gamma} ! {len(partition)} clusters créés")
         
 # BLAST
-# traitement_graphe(BLAST_FILE, BLAST_COMP_FILE)
+# traitement_graphe(BLAST_COMP_FILE, OUTPUT_CLUSTERS_BLAST)
 
 # BLAST & embeddings
 for input_file, output_file in zip(input_files, output_files):

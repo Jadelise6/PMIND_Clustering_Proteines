@@ -8,9 +8,9 @@ import time
 import csv
 
 # BLAST
-BLAST_COMP_FILE = "/tempory/21234701/blast_components.tsv"       # Fichier des composantes
-output_file = "/tempory/21234701/time_temporary_leiden.tsv"      # Fichier temporaire
-time_file = "./time_leiden.csv"                                  # Fichier CSV des temps
+BLAST_COMP_FILE = "/tempory/21234701/reduced_blast_components.tsv"       # Fichier des composantes
+output_file = "/tempory/21234701/time_temporary_leiden"                  # Fichier temporaire
+time_file = "./time_leiden.csv"                                          # Fichier CSV des temps
 gamma = 1.0
 
 # Listes des temps d'exécution et tailles
