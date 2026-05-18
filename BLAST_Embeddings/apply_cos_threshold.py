@@ -1,8 +1,10 @@
 # Script utilisé pour appliquer un seuil au graphe avec la similarité cosinus des embeddings
 
-# Paramètres
-COS_FILE = "/tempory/21234701/darkdino_cosine_graph.tsv"
-OUTPUT_FILE = "/tempory/21234701/darkdino_cos_graph_threshold.tsv"
+# Chemins
+global_path = "/tempory/21234701"
+
+COS_FILE = f"{global_path}/darkdino_cosine_graph.tsv"
+OUTPUT_FILE = f"{global_path}/darkdino_cos_graph_threshold.tsv"
 
 threshold = 0.1         # Seuil identique à celui de BLAST
 

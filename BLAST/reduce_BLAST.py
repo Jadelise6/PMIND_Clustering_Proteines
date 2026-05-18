@@ -5,12 +5,14 @@ ID_SIZE = 100
 RECORD_SIZE = ID_SIZE + (512 * 4)
 
 # Chemins
+global_path = "/tempory/21234701"
+
 # BLAST
-BLAST_FILE = "/tempory/21234701/graph_edges.tsv"                   # Graphe considéré : fichier d'entrée
-REDUCED_BLAST_FILE = "/tempory/21234701/reduced_graph_edges.tsv"   # Blast réduit
+BLAST_FILE = f"{global_path}/graph_edges.tsv"                   # Graphe considéré : fichier d'entrée
+REDUCED_BLAST_FILE = f"{global_path}/reduced_graph_edges.tsv"   # Blast réduit
 
 # Embeddings
-EMB_DAT = "/tempory/21234701/output_proteinbert/embeddings_final_deduplicated.dat"
+EMB_DAT = f"{global_path}/output_proteinbert/embeddings_final_deduplicated.dat"
 
 def get_valid_ids():
     print("Chargement de l'index des IDs des embeddings")

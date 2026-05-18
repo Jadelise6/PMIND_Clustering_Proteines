@@ -3,17 +3,19 @@
 
 import os
 
-# Paramètres
-EMB_DAT = "/tempory/21234701/output_proteinbert/embeddings_final_deduplicated.dat"
-BLAST_FILE = "/tempory/21234701/graph_edges.tsv"
-ALPHA_LIST = [0.2, 0.4, 0.5, 0.6, 0.8] #[ 0.93, 0.96, 0.99, 1.0]
-COSINE_FILE = "/tempory/21234701/darkdino_cos_graph_threshold.tsv"
+# Chemins
+global_path = "/tempory/21234701"
+
+EMB_DAT = f"{global_path}/output_proteinbert/embeddings_final_deduplicated.dat"
+BLAST_FILE = f"{global_path}/graph_edges.tsv"
+ALPHA_LIST = [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 0.93, 0.96, 0.99, 1.0]
+COSINE_FILE = f"{global_path}/darkdino_cos_graph_threshold.tsv"
 
 ID_SIZE = 100
 RECORD_SIZE = ID_SIZE + (512 * 4)
 
 def get_valid_ids():
-    # Crée un ensemble des IDs des embeddings, qui sont donc les IDs valides pour BLAST
+    # Crée un ensemble des IDs des embeddings, qui sont donc les Ids valides pour BLAST
     print("Chargement de l'index des IDs des embeddings")
     valid_ids = set()
     
@@ -31,7 +33,7 @@ def get_valid_ids():
 def combine_and_filter(valid_ids):
     print(f"Lancement pour alpha = {ALPHA_LIST}")
     
-    # Chargement du fichier de la simirité cosinus des embeddings
+    # Chargement du fichier de la similaité cosinus des embeddings
     print("Chargement du fichier cosinus")
     cosine_scores = {}
     

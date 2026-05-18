@@ -8,12 +8,14 @@ import pickle
 import re
 from sklearn.decomposition import IncrementalPCA
 
+global_path = "/tempory/21234701"
+
 # Configuration du CPU
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 
 # Importation du modèle ProteinBERT
-BASE_PATH = "/tempory/21234701/protein_bert-master"
+BASE_PATH = f"{global_path}/protein_bert-master"
 if BASE_PATH not in sys.path:
     sys.path.insert(0, BASE_PATH)
 
@@ -23,8 +25,8 @@ proteinbert.conv_and_global_attention_model.ConvBertLayer = GlobalAttention
 from proteinbert import load_pretrained_model
 
 # Paramètres
-INPUT_CSV = "/tempory/21234701/darkdino_cleaned_for_bert.csv" 
-OUTPUT_DIR = "/tempory/21234701/output_proteinbert"
+INPUT_CSV = f"{global_path}/darkdino_cleaned_for_bert.csv" 
+OUTPUT_DIR = f"{global_path}/output_proteinbert"
 CHECKPOINT_FILE = os.path.join(OUTPUT_DIR, "checkpoint_pca_final.pkl")
 FINAL_DAT = os.path.join(OUTPUT_DIR, "embeddings_final_clean.dat")
 

@@ -4,10 +4,12 @@
 import numpy as np
 import os
 
-# Paramètres
-DAT_FILE = "/tempory/21234701/output_proteinbert/embeddings_final_deduplicated.dat"
-BLAST_FILE = "/tempory/21234701/graph_edges.tsv"
-OUTPUT_FILE = "/tempory/21234701/darkdino_cosine_graph.tsv"
+# Chemins et paramètres
+global_path = "/tempory/21234701"
+
+DAT_FILE = f"{global_path}/output_proteinbert/embeddings_final_deduplicated.dat"
+BLAST_FILE = f"{global_path}/graph_edges.tsv"
+OUTPUT_FILE = f"{global_path}/darkdino_cosine_graph.tsv"
 
 ID_SIZE = 100           # Taille de l'ID (même ID que les .fasta)
 VEC_SIZE = 512
