@@ -55,7 +55,7 @@ L’objectif de ce projet est d’explorer l’intégration des embeddings prot�
 |   |   |   alpha_leiden_all_metrics_résolution*.png    # graphiques des résultats de leiden pour tous les alphas
 |   |   |   alpha_mcl_all_metrics_inflation*.png        # graphiques des résultats de mcl pour tous les alphas
 │   └───rand_score/
-│   |   |   clusters_comparison.py       # compare BLAST et BLAST & Embeddings avec alpha variant en calculant le score de rand
+│   |   |   rand_score.py       # compare BLAST et BLAST & Embeddings avec alpha variant en calculant le score de rand
 │   |   |   plot_rand_score.py           # affiche le score de rand et crée rand_score.png
 |   |   |   plot_rand_score_seed.py           # affiche le score de rand pour plusieurs graines et crée rand_score_seed.png
 │   |   |   rand_score_leiden_seed.png               # rand score de Leiden pour plusieurs graines entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
@@ -92,22 +92,45 @@ Utilisation de proteinBERT (dossier *Embeddings*)
 ### Étape 3 : analyse de BLAST et de BLAST & Embeddings
 (dossiers *BLAST* et *Components_analyse*)
 1.  Lancer reduce_BLAST.py
-2.  Lancer organize_components.py en exécutant tour à tour avec BLAST et BLAST & Embeddings
-3.  Lancer components_violinplot.py en exécutant tour à tour avec BLAST et BLAST & Embeddings
+2.  Lancer organize_components.py
+3.  Lancer components_violinplot.py
 
-### Étape 4 : clustering avec l'algorithme Leiden
-(dossier *Leiden*)
-1.  Lancer leiden_clustering.py en exécutant tour à tour avec BLAST et BLAST & Embeddings
-#### Obtention des résultats des métriques d'homogénéité et de sépérabilité des clusters d'une partition
-1.  Lancer eval_metrics.py en exécutant tour à tour avec BLAST et BLAST & Embeddings
-2.  Lancer analyse_metrics_results.py en exécutant tour à tour avec BLAST et BLAST & Embeddings
-#### Comparaison entre les partition à l'aide de l'Index de Rand
-1.  Lancer clusters_comparison.py
-2.  Lancer plot_rand_score.py
-#### Obtention des temps d'exécution de Leiden et de la comparaison avec la complexité temporelle théorique et pratique
-1.  Lancer calculate_time_leiden.py
-2.  Lancer plot_time.py
-
-### Étape 5 : étude et utilisation des annotations protéiques
+### Étape 4 : étude et utilisation des annotations protéiques
 (dossier *Annotations*)
 
+### Étape 5 : kNN
+(dossier *kNN*)
+1.  Lancer create_file_kNN.py
+2.  Lancer execute_kNN.py
+3.  Lancer plot_metrics_results.py
+
+### Étape 6 : première approche
+(dossier *Models*)
+1.  Lancer leiden_clustering.py
+2.  Lancer mcl_clustering.py
+
+#### Obtention des résultats des métriques d'homogénéité et de sépérabilité des clusters d'une partition
+(dossier *evaluate_results*)
+1.  Lancer eval_metrics.py avec mcl et leiden
+2.  Lancer analyse_metrics_results.py avec mcl et leiden
+
+#### Propagation des annotations
+(dossier *propagation*)
+1.  Lancer filtrage_clusters.py
+2.  Lancer propagation_app_1.py
+
+#### Comparaison entre les partition à l'aide de l'Index de Rand
+(dossier *rand_score*)
+1.  Lancer rand_score.py
+2.  Lancer plot_rand_score.py
+3.  
+#### Obtention des temps d'exécution des algorithmes et de la comparaison avec la complexité temporelle théorique et pratique
+(dossier *time*)
+1.  Lancer calculate_time_leiden.py 
+2.  Lancer calculate_time_mcl.py 
+3.  Lancer plot_time.py  avec mcl et leiden
+
+### Étape 7 : deuxième approche
+(dossier *2_app*)
+1.  Lancer separate_clusters_into_files.py
+2.  Lancer algo_2_app.py
