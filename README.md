@@ -1,53 +1,84 @@
 # PMIND_Clustering_Proteines
 
-L’objectif de ce projet est d’explorer l’intégration des embeddings protéiques dans le processus de clustering, en complément des graphes de similarité issus de BLAST. L’hypothèse sous-jacente est que la combinaison de ces deux sources d’information permettra d’obtenir des clusters plus homogènes du point de vue fonctionnel, et ainsi améliorer la qualité de l’annotation automatique des protéines.
+L’objectif de ce projet est d’explorer l’intégration des embeddings protéiques dans le processus de clustering, en complément des graphes de similarité issus de BLAST.
 
-## Vue d'ensemble du projet
+L’hypothèse sous-jacente est que la combinaison de ces deux sources d’information permettra d’obtenir des clusters plus homogènes du point de vue fonctionnel, et ainsi améliorer la qualité de l’annotation automatique des protéines.
+
+<details>
+    <summary>Table des Matières</summary>
+    <ol>
+        <li><a href="#données-utilisées">Données utilisées</a></li>
+        <li><a href="#vue-densemble-du-projet">Vue d'ensemble du projet</a></li>
+        <li><a href="#structure-du-projet">Structure du projet</a></li>
+        <li>
+            <a href="#guide-dutilisation">Guide d'utilisation</a>
+            <ol>
+                <li><a href="#dépendances">Dépendances</a></li>
+                <li><a href="#étapes-dexécution">Étapes d'exécution</a></li>
+            </ol>
+        </li>
+        <li><a href="#auteurs">Auteurs</a></li>
+    </ol>
+</details>
+
+
+## 📊 Données utilisées
+- **Séquences protéiques**
+  - environ 7,4 M
+  - format FASTA
+  - dinoflagellés
+
+- **Annotations fonctionnelles PFAM**
+  - 30,9 % de protéines annotées
+  - 2,9 M dont 9146 distinctes
+  - 1 à 35 par protéine (multi-label)
+
+## ℹ️ Vue d'ensemble du projet
 
 **Pipeline du projet**
 - **Étape 1 :** acquisition des Embeddings des protéines - utilisation de proteinBERT (dossier *Embeddings*)
-- **Étape 2 :** calcul de la combinaison linéaire pondérée pour différentes $\alpha$ entre BLAST et la similarité cosinus des Embeddings (dossier *BLAST_Embeddings*)
+- **Étape 2 :** calcul de la combinaison linéaire pondérée pour différents $\alpha$ entre le graphe de similarité BLAST et le graphe issu de la similarité cosinus des Embeddings (dossier *BLAST_Embeddings*)
 - **Étape 3 :** analyse de BLAST et de BLAST & Embeddings (dossier *Components_analysis*)
 - **Étape 4 :** étude et utilisation des annotations protéiques (dossier *Annotations*)
 - **Étape 5 :** application du kNN (dossier *kNN*)
 - **Étape 6 :** clustering avec l'algorithme Leiden et MCL pour la première approche (dossier *Models*)
-- **Étape 7 :** application de la deuxième approche (dossier *2_app*)
+- **Étape 7 :** propagation des annotations pour la première et la deuxième approche (dossier *Annotation_propagation*)
 
-## Structure du projet
+## 🗂️ Structure du projet
 ``` 
-├───2_app/
-│   │   algo_2_app.py   # exécute la boucle principale de l'approche 2
-│   │   separate_clusters_into_files.py   # sépare les clusters dans différents fichiers pour les indexer - optimisation approche 2
+├───Annotation_propagation/
+│   │   algo_2_main_loop.py                # exécute la boucle principale de l'approche 2
+│   │   separate_clusters_into_files.py    # sépare les clusters dans différents fichiers pour les indexer - optimisation approche 2
 ├───Annotations/
 │   │   annotations_metrics.py   
 │   │   filtrer_annotations.py   
 ├───BLAST/
-│   │   reduce_BLAST.py          # calcule l'intersection entre BLAST et BLAST & Embeddings, afin de ne garder dans BLAST que les protéines de BLAST & Embeddings
+│   │   reduce_BLAST.py                    # calcule l'intersection entre BLAST et BLAST & Embeddings, afin de ne garder dans BLAST que les protéines de BLAST & Embeddings
 ├───BLAST_Embeddings/
-│   │   apply_cos_threshold.py          # applique un seuil au graphe avec la similarité cosinus des embeddings
-│   │   generate_alpha_variants.py      # génère les graphes résultants de la combinaison linéaire pondérée entre BLAST et la similarité cosinus
+│   │   apply_cos_threshold.py             # applique un seuil au graphe avec la similarité cosinus des embeddings
+│   │   generate_alpha_variants.py         # génère les graphes résultants de la combinaison linéaire pondérée entre BLAST et la similarité cosinus
 ├───Components_analysis/
-│   │   alpha_components.png            # violinplot de la distribution des composantes de BLAST & Embeddings
-│   │   blast_components.png            # violinplot de la distribution des composantes de BLAST
-│   │   reduced_blast_components.png    # violinplot de la distribution des composantes de BLAST réduit
-│   │   components_violinplot.py        # calcule les violinplot de la distribution des composantes du graphe demandé
-│   │   organize_components.py          # crée un fichier associant à chaque protéine l'ID de sa composante
+│   │   alpha_components.png               # violinplot de la distribution des composantes de BLAST & Embeddings
+│   │   blast_components.png               # violinplot de la distribution des composantes de BLAST
+│   │   reduced_blast_components.png       # violinplot de la distribution des composantes de BLAST réduit
+│   │   components_violinplot.py           # calcule les violinplot de la distribution des composantes du graphe demandé
+│   │   organize_components.py             # crée un fichier associant à chaque protéine l'ID de sa composante
 ├───Embeddings/
-│   │   create_all_darkdino.ipynb   # crée le fichier csv contenant les protéines à partir des génomes .fasta et affiche quelques statistiques
-│   │   deduplicate_dat.py          # supprime les doublons dans le graphe final des embeddings
-│   │   esm2_script.py              # crée les embeddings des protéines en utilisant le modèle ESM_2
-│   │   generate_cos_graph.py       # crée le graphe avec la similarité cosinus des embeddings 
-|   |   proteinBERT_script.py       # crée les embeddings des protéines en utilisant le modèle ProteinBERT
+│   │   create_all_darkdino.ipynb          # crée le fichier csv contenant les protéines à partir des génomes .fasta et affiche quelques statistiques
+│   │   deduplicate_dat.py                 # supprime les doublons dans le graphe final des embeddings
+│   │   esm2_script.py                     # crée les embeddings des protéines en utilisant le modèle ESM_2
+│   │   generate_cos_graph.py              # crée le graphe avec la similarité cosinus des embeddings 
+|   |   proteinBERT_script.py              # crée les embeddings des protéines en utilisant le modèle ProteinBERT
 │   └───Data/
-│   |   |   darkdino_cleaned_for_bert.csv   # fichier csv contenant toutes les protéines sans X utilisé pour ProteinBERT
-│   |   |   darkdino_cos_graph.tsv          # fichier tsv contenant le graph de la similarité cosinus des embeddings de ProteinBERT
-│   |   |   embeddings_esm2.bin             # fichier binaire contenant les embeddings créé par ESM_2
-│   |   |   embeddings_proteinbert.dat      # fichier dat contenant les embeddings créé par ProteinBERT
+│   |   |   darkdino_cleaned_for_bert.csv  # fichier csv contenant toutes les protéines sans X utilisé pour ProteinBERT
+│   |   |   darkdino_cos_graph.tsv         # fichier tsv contenant le graph de la similarité cosinus des embeddings de ProteinBERT
+│   |   |   embeddings_esm2.bin            # fichier binaire contenant les embeddings créé par ESM_2
+│   |   |   embeddings_proteinbert.dat     # fichier dat contenant les embeddings créé par ProteinBERT
 ├───kNN/
-|   | create_file_kNN.py        # crée un fichier csv pour le kNN
-|   | execute_kNN.py            # exécute le kNN
-|   | plot_metrics_results.py   # affiche les résultats du kNN en créant kNN_metrics.png 
-|   | kNN_metrics.png           # résultats du kNN
+|   | create_file_kNN.py                   # crée un fichier csv pour le kNN
+|   | execute_kNN.py                       # exécute le kNN
+|   | plot_metrics_results.py              # affiche les résultats du kNN en créant kNN_metrics.png 
+|   | kNN_metrics.png                      # résultats du kNN
 ├───Models/
 │   └───evaluate_results/
 │   |   |   analyse_metrics_results.py                  # crée les graphes des métriques
@@ -55,82 +86,108 @@ L’objectif de ce projet est d’explorer l’intégration des embeddings prot�
 |   |   |   alpha_leiden_all_metrics_résolution*.png    # graphiques des résultats de leiden pour tous les alphas
 |   |   |   alpha_mcl_all_metrics_inflation*.png        # graphiques des résultats de mcl pour tous les alphas
 │   └───rand_score/
-│   |   |   rand_score.py       # compare BLAST et BLAST & Embeddings avec alpha variant en calculant le score de rand
-│   |   |   plot_rand_score.py           # affiche le score de rand et crée rand_score.png
-|   |   |   plot_rand_score_seed.py           # affiche le score de rand pour plusieurs graines et crée rand_score_seed.png
-│   |   |   rand_score_leiden_seed.png               # rand score de Leiden pour plusieurs graines entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
-│   |   |   rand_score_leiden.png               # rand score de Leiden entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
-│   |   |   rand_score_mcl.png               # rand score de mcl entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
+│   |   |   rand_score.py                   # compare BLAST et BLAST & Embeddings avec alpha variant en calculant le score de rand
+│   |   |   plot_rand_score.py              # affiche le score de rand et crée rand_score.png
+|   |   |   plot_rand_score_seed.py         # affiche le score de rand pour plusieurs graines et crée rand_score_seed.png
+│   |   |   rand_score_leiden_seed.png      # rand score de Leiden pour plusieurs graines entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
+│   |   |   rand_score_leiden.png           # rand score de Leiden entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
+│   |   |   rand_score_mcl.png              # rand score de mcl entre BLAST et BLAST & Embeddings avec alpha variant, crée par plot_rand_score.py
 │   └───time/
-│   |   |   calculate_time_leiden.py     # calcule le temps d'exécution de l'agorithme de Leiden sur les 20 première composantes
-│   |   |   calculate_time_mcl.py     # calcule le temps d'exécution de l'agorithme MCL sur les 20 première composantes 
-│   |   |   plot_time.py                 # affiche la courbe de temps d'exécution et crée time_plot.png
-│   |   |   time_leiden_plot.png         # courbe de temps d'exécution de Leinden créée par plot_time.py
-│   |   |   time_mcl_plot.png         # courbe de temps d'exécution de mcl créée par plot_time.py
-│   |   leiden_clustering.py        # exécute Leiden sur le graphe demandé
-│   |   leiden_clustering_seed.py        # exécute Leiden sur le graphe demandé avec plusieurs graines
-│   |   mcl_clustering.py        # exécute mcl sur le graphe demandé
+│   |   |   calculate_time_leiden.py        # calcule le temps d'exécution de l'agorithme de Leiden sur les 20 première composantes
+│   |   |   calculate_time_mcl.py           # calcule le temps d'exécution de l'agorithme MCL sur les 20 première composantes 
+│   |   |   plot_time.py                    # affiche la courbe de temps d'exécution et crée time_plot.png
+│   |   |   time_leiden_plot.png            # courbe de temps d'exécution de Leinden créée par plot_time.py
+│   |   |   time_mcl_plot.png               # courbe de temps d'exécution de mcl créée par plot_time.py
+│   |   leiden_clustering.py                # exécute Leiden sur le graphe demandé
+│   |   leiden_clustering_seed.py           # exécute Leiden sur le graphe demandé avec plusieurs graines
+│   |   mcl_clustering.py                   # exécute mcl sur le graphe demandé
 ```
+*(Certains scripts de Mathilde Gauteur manquent à l'appel, notamment sur les annotations et la fin des approches 1 et 2).*
 
-## Guide d'utilisation
-Peut être exécuté si vous possédez :
-- un dossier contenant les protéines d'un génôme (ID et séquence d'acides aminés)
-- le graphe BLAST des dites protéines
-- les annotations des protéines
+## 📝 Guide d'utilisation
 
-### Étape 1 : acquisition des Embeddings des protéines
-Utilisation de proteinBERT (dossier *Embeddings*)
-1.  Lancer create_all_darkdino.ipynb
-2.  Lancer proteinBERT_script.py
-3.  Lancer generate_cos_graph.py
+Ce projet peut être exécuté si vous disposez des éléments suivants :
+- un ensemble de protéines au format FASTA, avec un identifiant et une séquence d'acides aminés pour chaque entrée ;
+- le graphe BLAST correspondant à ces protéines ;
+- les annotations fonctionnelles associées aux protéines.
 
-### Étape 2 : calcul de la combinaison linéaire pondérée pour différentes $\alpha$ entre BLAST et la similarité cosinus des Embeddings
-(dossier *BLAST_Embeddings*)
-1.  Lancer apply_cos_threshold.py
-2.  Lancer generate_alpha_variants.py
+### 📦 Dépendances
 
-### Étape 3 : analyse de BLAST et de BLAST & Embeddings
-(dossiers *BLAST* et *Components_analyse*)
-1.  Lancer reduce_BLAST.py
-2.  Lancer organize_components.py
-3.  Lancer components_violinplot.py
+Outils externes :
+- MCL
+- proteinBERT
 
-### Étape 4 : étude et utilisation des annotations protéiques
-(dossier *Annotations*)
+Bibliothèques Python pouvant être installées avec `pip` :
+- leidenalg
+- igraph
+- matplotlib
+- numpy
+- pandas
+- scikit-learn
+- seaborn
 
-### Étape 5 : kNN
-(dossier *kNN*)
-1.  Lancer create_file_kNN.py
-2.  Lancer execute_kNN.py
-3.  Lancer plot_metrics_results.py
+### 🚀 Étapes d'exécution
 
-### Étape 6 : première approche
-(dossier *Models*)
-1.  Lancer leiden_clustering.py
-2.  Lancer mcl_clustering.py
+#### 1. Génération des embeddings protéiques
+Répertoire : `Embeddings`
+1. Lancer `create_all_darkdino.ipynb` pour préparer les séquences.
+2. Lancer `proteinBERT_script.py` pour calculer les embeddings.
+3. Lancer `generate_cos_graph.py` pour construire le graphe de similarité cosinus.
 
-#### Obtention des résultats des métriques d'homogénéité et de sépérabilité des clusters d'une partition
-(dossier *evaluate_results*)
-1.  Lancer eval_metrics.py avec mcl et leiden
-2.  Lancer analyse_metrics_results.py avec mcl et leiden
+#### 2. Construction du graphe combiné BLAST + embeddings
+Répertoire : `BLAST_Embeddings`
+1. Lancer `apply_cos_threshold.py` pour filtrer les arêtes selon le seuil de similarité cosinus.
+2. Lancer `generate_alpha_variants.py` pour générer les graphes pondérés pour différentes valeurs de $\alpha$.
 
-#### Propagation des annotations
-(dossier *propagation*)
-1.  Lancer filtrage_clusters.py
-2.  Lancer propagation_app_1.py
+#### 3. Analyse des composantes connexes
+Répertoires : `BLAST` et `Components_analysis`
+1. Lancer `reduce_BLAST.py` pour restreindre le graphe BLAST aux protéines présentes dans le graphe combiné.
+2. Lancer `organize_components.py` pour associer à chaque protéine son composant connexe.
+3. Lancer `components_violinplot.py` pour visualiser la distribution des tailles de composantes.
 
-#### Comparaison entre les partition à l'aide de l'Index de Rand
-(dossier *rand_score*)
-1.  Lancer rand_score.py
-2.  Lancer plot_rand_score.py
-3.  
-#### Obtention des temps d'exécution des algorithmes et de la comparaison avec la complexité temporelle théorique et pratique
-(dossier *time*)
-1.  Lancer calculate_time_leiden.py 
-2.  Lancer calculate_time_mcl.py 
-3.  Lancer plot_time.py  avec mcl et leiden
+#### 4. Exploitation des annotations
+Répertoire : `Annotations`
+1. Lancer les scripts de filtrage et d'analyse des annotations selon le besoin du pipeline.
+2. Utiliser ces résultats pour évaluer l'homogénéité fonctionnelle des clusters.
 
-### Étape 7 : deuxième approche
-(dossier *2_app*)
-1.  Lancer separate_clusters_into_files.py
-2.  Lancer algo_2_app.py
+#### 5. Construction et évaluation du kNN
+Répertoire : `kNN`
+1. Lancer `create_file_kNN.py` pour préparer le fichier d'entrée.
+2. Lancer `execute_kNN.py` pour exécuter l'algorithme.
+3. Lancer `plot_metrics_results.py` pour visualiser les scores obtenus.
+
+#### 6. Première approche de clustering
+Répertoire : `Models`
+1. Lancer `leiden_clustering.py` pour exécuter Leiden.
+2. Lancer `mcl_clustering.py` pour exécuter MCL.
+
+##### Évaluation des partitions
+Répertoire : `Models/evaluate_results`
+1. Lancer `eval_metrics.py` sur les partitions produites par Leiden et MCL.
+2. Lancer `analyse_metrics_results.py` pour comparer les métriques d'homogénéité et de séparabilité.
+
+##### Propagation des annotations
+Répertoire : `Models/propagation`
+1. Lancer `filtrage_clusters.py` pour sélectionner les clusters pertinents.
+2. Lancer `propagation_app_1.py` pour propager les annotations dans la première approche.
+
+##### Comparaison des partitions avec l'indice de Rand
+Répertoire : `Models/rand_score`
+1. Lancer `rand_score.py` pour calculer l'indice de Rand.
+2. Lancer `plot_rand_score.py` pour produire les graphiques de comparaison.
+3. Lancer `plot_rand_score_seed.py` si vous souhaitez étudier la stabilité selon plusieurs graines.
+
+##### Étude du temps d'exécution
+Répertoire : `Models/time`
+1. Lancer `calculate_time_leiden.py`.
+2. Lancer `calculate_time_mcl.py`.
+3. Lancer `plot_time.py` pour comparer les temps d'exécution observés et la complexité théorique attendue.
+
+#### 7. Propagation des annotations dans la seconde approche
+Répertoire : `Annotation_propagation`
+1. Lancer `separate_clusters_into_files.py` pour répartir les clusters dans des fichiers distincts.
+2. Lancer `algo_2_main_loop.py` pour exécuter la boucle principale de l'approche 
+
+## ✍🏻 Auteurs
+* [Élise THOMAS](https://github.com/Jadelise6)
+* [Mathilde GAUTEUR](https://github.com/gauteurmathilde)

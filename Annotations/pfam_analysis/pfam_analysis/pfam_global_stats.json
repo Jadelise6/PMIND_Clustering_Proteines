@@ -1,0 +1,13 @@
+{
+    "n_total_proteins_seen_in_annotation_files": 5769359,
+    "n_proteins_with_pfam": 2350666,
+    "ratio_proteins_with_pfam": 0.40743971730655,
+    "n_pfam_rows": 2962935,
+    "n_unique_pfam_annotations": 9146,
+    "mean_pfam_annotations_per_annotated_protein": 1.2604661827754347,
+    "median_pfam_annotations_per_annotated_protein": 1.0,
+    "min_pfam_annotations_per_annotated_protein": 1,
+    "max_pfam_annotations_per_annotated_protein": 35,
+    "q1_pfam_annotations_per_annotated_protein": 1.0,
+    "q3_pfam_annotations_per_annotated_protein": 1.0
+}
