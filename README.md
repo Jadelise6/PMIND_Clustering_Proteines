@@ -7,17 +7,17 @@ L’hypothèse sous-jacente est que la combinaison de ces deux sources d’infor
 <details>
     <summary>Table des Matières</summary>
     <ol>
-        <li><a href="#données-utilisées">Données utilisées</a></li>
-        <li><a href="#vue-densemble-du-projet">Vue d'ensemble du projet</a></li>
-        <li><a href="#structure-du-projet">Structure du projet</a></li>
+        <li><a href="#-données-utilisées">Données utilisées</a></li>
+        <li><a href="#ℹ️-vue-densemble-du-projet">Vue d'ensemble du projet</a></li>
+        <li><a href="#-structure-du-projet">Structure du projet</a></li>
         <li>
-            <a href="#guide-dutilisation">Guide d'utilisation</a>
+            <a href="#-guide-dutilisation">Guide d'utilisation</a>
             <ol>
-                <li><a href="#dépendances">Dépendances</a></li>
-                <li><a href="#étapes-dexécution">Étapes d'exécution</a></li>
+                <li><a href="#-dépendances">Dépendances</a></li>
+                <li><a href="#-étapes-dexécution">Étapes d'exécution</a></li>
             </ol>
         </li>
-        <li><a href="#auteurs">Auteurs</a></li>
+        <li><a href="#-auteurs">Auteurs</a></li>
     </ol>
 </details>
 
