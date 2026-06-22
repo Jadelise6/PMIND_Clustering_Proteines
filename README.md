@@ -7,22 +7,93 @@ L’hypothèse sous-jacente est que la combinaison de ces deux sources d’infor
 <details>
     <summary>Table des Matières</summary>
     <ol>
-        <li><a href="#-données-utilisées">Données utilisées</a></li>
-        <li><a href="#ℹ️-vue-densemble-du-projet">Vue d'ensemble du projet</a></li>
-        <li><a href="#-structure-du-projet">Structure du projet</a></li>
+        <li><a href="#description-du-projet">Description du projet</a></li>
+        <li><a href="#données-utilisées">Données utilisées</a></li>
+        <li><a href="#ℹvue-densemble-du-projet">Vue d'ensemble du projet</a></li>
+        <li><a href="#structure-du-projet">Structure du projet</a></li>
         <li>
-            <a href="#-guide-dutilisation">Guide d'utilisation</a>
+            <a href="#guide-dutilisation">Guide d'utilisation</a>
             <ol>
-                <li><a href="#-dépendances">Dépendances</a></li>
-                <li><a href="#-étapes-dexécution">Étapes d'exécution</a></li>
+                <li><a href="#dépendances">Dépendances</a></li>
+                <li><a href="#étapes-dexécution">Étapes d'exécution</a></li>
             </ol>
         </li>
-        <li><a href="#-auteurs">Auteurs</a></li>
+        <li><a href="#auteurs">Auteurs</a></li>
     </ol>
 </details>
 
+## Description du projet
+Lors de ce projet, nous étudions des méthodes de clustering pour résoudre le vaste problème de l'annotation des protéines. Notre objectif est d'améliorer l'homogénéité des clusters obtenus en utilisant ces méthodes, et d'innover en intégrant les embeddings de protéines. L'homogénéité des clusters est évaluée par des mesures classiques, mais également par des mesures fonctionnelles : **l'incompatibilité entre deux annotatons**. En effet, certaines annotations sont incompatibles, et de ce fait, ne doivent pas se retrouver dans le même cluster. Les méthodes que nous employons visent à optimiser cette contrainte en restant très prudent, au risque d'avoir un rappel faible.
 
-## 📊 Données utilisées
+### Le kNN comme standard d'annotation fonctionnelle
+**Inconvénients du kNN**
+- Complexité temporelle : O(M×V×log(V))
+avec : 
+  - M : nombre de protéines à annoter
+  - V : degré de la protéine à annoter
+  - log(V) : coût du tri des voisins
+- Trop coûteux à grande échelle
+- Sensible aux valeurs aberrantes
+- Ne peut voir que le connu
+
+### Algorithes de clustering considérés
+#### MCL
+(Markov Clustering aLgorithm)
+
+**Principe :** marche aléatoire sur le graphe
+
+**Complexité :** O($n^3$)
+
+**Paramètres :**
+- Puissance e : contrôle l’expansion de la matrice
+- Inflation r : contrôle la granularité des clusters
+
+#### Leiden
+
+**Principe :** optimisation de la modularité
+
+**Complexité :** O(n log(n))
+
+**Paramètres :**
+- Résolution gamma : contrôle la granularité des clusters
+
+### Métriques d'évaluation
+**Co-distance**
+- mesure d'homogénéité
+- points proches entre eux au sein du cluster
+
+**Indice de Jaccard**
+- mesure de cohérence biologique
+- détecte l'incompatibilité entre deux annotations
+
+**Rappel, précision et f1-score**
+
+### Première approche
+1. **Combinaison linéaire pondérée**
+   - graphe de similarité **BLAST**
+   - graphe de la similarité cosinus des **embeddings**
+2. **Clustering avec MCL et Leiden**
+Recherche des meilleurs paramètres des algorithmes de clustering et du meilleur alpha
+3. **Calcul et analyse des métriques de clustering** pour juger de la qualité de la partition 
+obtenue (la co-distance pour l'homogénéité et la coupe normalisée pour la séparabilité)
+4. **Propagation des annotations** au sein de la partition
+5. **Calcul et analyse des mesures de la qualité de la prédiction** des annotations (f1-score, 
+rappel, précision)
+
+### Deuxième approche
+1. **Clustering avec Leiden et gamma = 1,0** (meilleurs modèle et paramètre trouvés lors de l'approche 1)
+   - graphe de similarité BLAST
+   - graphe de la similarité cosinus des embeddings
+2. **Combinaison des deux partitions obtenues
+ Boucle principale**
+   - Propagation des annotations dans la partition de BLAST
+   - Pour toute protéine, reporter son annotation dans BLAST aux embeddings
+   - Propagation des annotations dans la partition des embeddings
+   - Pour toute protéine, reporter son annotation dans les embeddings à BLAST
+3. **Condition d’arrêt :** pas de nouvelle annotation ajoutée à BLAST ou aux 
+embeddings à la fin d’une itération
+
+## Données utilisées
 - **Séquences protéiques**
   - environ 7,4 M
   - format FASTA
@@ -33,7 +104,7 @@ L’hypothèse sous-jacente est que la combinaison de ces deux sources d’infor
   - 2,9 M dont 9146 distinctes
   - 1 à 35 par protéine (multi-label)
 
-## ℹ️ Vue d'ensemble du projet
+## Vue d'ensemble du projet
 
 **Pipeline du projet**
 - **Étape 1 :** acquisition des Embeddings des protéines - utilisation de proteinBERT (dossier *Embeddings*)
@@ -44,7 +115,7 @@ L’hypothèse sous-jacente est que la combinaison de ces deux sources d’infor
 - **Étape 6 :** clustering avec l'algorithme Leiden et MCL pour la première approche (dossier *Models*)
 - **Étape 7 :** propagation des annotations pour la première et la deuxième approche (dossier *Annotation_propagation*)
 
-## 🗂️ Structure du projet
+## Structure du projet
 ``` 
 ├───Annotation_propagation/
 │   │   algo_2_main_loop.py                # exécute la boucle principale de l'approche 2
@@ -104,14 +175,14 @@ L’hypothèse sous-jacente est que la combinaison de ces deux sources d’infor
 ```
 *(Certains scripts de Mathilde Gauteur manquent à l'appel, notamment sur les annotations et la fin des approches 1 et 2).*
 
-## 📝 Guide d'utilisation
+## Guide d'utilisation
 
 Ce projet peut être exécuté si vous disposez des éléments suivants :
 - un ensemble de protéines au format FASTA, avec un identifiant et une séquence d'acides aminés pour chaque entrée ;
 - le graphe BLAST correspondant à ces protéines ;
 - les annotations fonctionnelles associées aux protéines.
 
-### 📦 Dépendances
+### Dépendances
 
 Outils externes :
 - MCL
@@ -126,7 +197,7 @@ Bibliothèques Python pouvant être installées avec `pip` :
 - scikit-learn
 - seaborn
 
-### 🚀 Étapes d'exécution
+### Étapes d'exécution
 
 #### 1. Génération des embeddings protéiques
 Répertoire : `Embeddings`
@@ -188,6 +259,6 @@ Répertoire : `Annotation_propagation`
 1. Lancer `separate_clusters_into_files.py` pour répartir les clusters dans des fichiers distincts.
 2. Lancer `algo_2_main_loop.py` pour exécuter la boucle principale de l'approche 
 
-## ✍🏻 Auteurs
+## Auteurs
 * [Élise THOMAS](https://github.com/Jadelise6)
 * [Mathilde GAUTEUR](https://github.com/gauteurmathilde)
